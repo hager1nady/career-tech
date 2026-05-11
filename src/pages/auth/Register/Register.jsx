@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { supabase } from "../../../lib/supabaseClient";
+import { supabase } from "../../../lib/supabaseClient.js";
 import styles from './Register.module.css'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
