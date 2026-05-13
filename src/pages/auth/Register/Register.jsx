@@ -14,11 +14,11 @@ export default function Register() {
     async function handleRegister(e) {
         e.preventDefault();
 
-        // 🧠 clean inputs
+        // clean inputs
         const cleanEmail = email.trim();
         const fullName = `${firstName} ${lastName}`.trim();
 
-        // ❗ simple validation
+        // validation
         if (!cleanEmail || !password || !firstName || !lastName) {
             alert("Please fill all fields");
             return;
@@ -35,15 +35,24 @@ export default function Register() {
             return;
         }
 
+        const user = data.user;
+
+        if (!user) {
+            alert("User not found");
+            return;
+        }
+
         // create profile in DB
         const { error: profileError } = await supabase
             .from("profiles")
-            .insert({
-                id: data.user?.id,
-                full_name: fullName,
-                role: "student",
-                level: "junior",
-            });
+            .insert([
+                {
+                    id: user.id,
+                    full_name: fullName,
+                    role: "student",
+                    level: "junior",
+                },
+            ]);
 
         if (profileError) {
             alert(profileError.message);
@@ -62,7 +71,10 @@ export default function Register() {
                 className="card border-0 shadow-sm p-4"
                 style={{ width: "420px", borderRadius: "14px" }}
             >
-                <h2 className="fw-bold text-center mb-2" style={{ color: "#0d47a1" }}>
+                <h2
+                    className="fw-bold text-center mb-2"
+                    style={{ color: "#0d47a1" }}
+                >
                     Create a new account
                 </h2>
 
@@ -73,7 +85,10 @@ export default function Register() {
                 {/* First + Last Name */}
                 <div className="row">
                     <div className="col-6 mb-3">
-                        <label className="form-label fw-semibold">First Name</label>
+                        <label className="form-label fw-semibold">
+                            First Name
+                        </label>
+
                         <input
                             type="text"
                             className={`form-control ${styles.customInput}`}
@@ -83,7 +98,10 @@ export default function Register() {
                     </div>
 
                     <div className="col-6 mb-3">
-                        <label className="form-label fw-semibold">Last Name</label>
+                        <label className="form-label fw-semibold">
+                            Last Name
+                        </label>
+
                         <input
                             type="text"
                             className={`form-control ${styles.customInput}`}
@@ -96,6 +114,7 @@ export default function Register() {
                 {/* Email */}
                 <div className="mb-3">
                     <label className="form-label fw-semibold">Email</label>
+
                     <input
                         type="email"
                         className={`form-control ${styles.customInput}`}
@@ -106,7 +125,9 @@ export default function Register() {
 
                 {/* Password */}
                 <div className="mb-4">
-                    <label className="form-label fw-semibold">Password</label>
+                    <label className="form-label fw-semibold">
+                        Password
+                    </label>
 
                     <div className="input-group">
                         <input
@@ -119,9 +140,15 @@ export default function Register() {
                         <span
                             className={`bg-white ${styles.inputGroupText}`}
                             style={{ cursor: "pointer" }}
-                            onClick={() => setShowPassword(!showPassword)}
+                            onClick={() =>
+                                setShowPassword(!showPassword)
+                            }
                         >
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            {showPassword ? (
+                                <FaEyeSlash />
+                            ) : (
+                                <FaEye />
+                            )}
                         </span>
                     </div>
                 </div>
@@ -129,14 +156,19 @@ export default function Register() {
                 {/* Submit */}
                 <button
                     className="btn w-100 text-white fw-semibold mb-3"
-                    style={{ backgroundColor: "#0a3d6d", padding: "12px" }}
+                    style={{
+                        backgroundColor: "#0a3d6d",
+                        padding: "12px",
+                    }}
                 >
                     Sign Up
                 </button>
 
                 <p className="text-center mb-0">
                     Already have an account?{" "}
-                    <span className="fw-semibold text-primary">Log in</span>
+                    <span className="fw-semibold text-primary">
+                        Log in
+                    </span>
                 </p>
             </div>
         </form>
